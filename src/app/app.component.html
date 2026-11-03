@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="header-content">
+    <h1>FAKE STORE</h1>
+    <p>Tu catálogo de productos</p>
+  </div>
+</header>
+
+<main class="container">
+  <section class="intro">
+    <span class="eyebrow">NUESTRA COLECCIÓN</span>
+    <h2>Catálogo de productos</h2>
+    <p>Descubre todos nuestros productos disponibles.</p>
+  </section>
+
+  @if (loading) {
+  <p class="message">Cargando productos...</p>
+  }
+
+  @if (errorMessage) {
+  <p class="message error">{{ errorMessage }}</p>
+  }
+
+  @if (!loading && !errorMessage) {
+  <section class="product-grid">
+    @for (product of products; track product.id) {
+    <article class="product-card">
+      <div class="product-image">
+        <img [src]="product.image" [alt]="product.title">
+      </div>
+
+      <div class="product-info">
+        <span class="category">{{ product.category }}</span>
+
+        <h3>{{ product.title }}</h3>
+
+        <p class="price">
+          {{ product.price | number:'1.2-2' }} €
+        </p>
+      </div>
+    </article>
+    } @empty {
+    <p>No hay productos disponibles.</p>
+    }
+  </section>
+  }
+</main>
+
+<footer class="footer">
+  <p>Fake Store · Catálogo de productos</p>
+</footer>
