@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from './services/product.service';
 import { Product } from './models/product';
@@ -12,6 +12,7 @@ import { Product } from './models/product';
 })
 export class AppComponent implements OnInit {
   private productService = inject(ProductService);
+  private cdr = inject(ChangeDetectorRef);
 
   products: Product[] = [];
   loading = true;
@@ -22,10 +23,13 @@ export class AppComponent implements OnInit {
       next: (products: Product[]) => {
         this.products = products;
         this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error al cargar productos:', error);
         this.errorMessage = 'No se pudieron cargar los productos.';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
